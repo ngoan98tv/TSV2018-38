@@ -1,5 +1,5 @@
-name: tuyensinh
-description: A new Flutter project.
+name: CTU Tuyển Sinh
+description: A Flutter project providing information of Can Tho University.
 
 dependencies:
   http: "^0.11.3+16"
