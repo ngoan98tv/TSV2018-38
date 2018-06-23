@@ -4,33 +4,80 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-Future<Post> fetchPost() async {
-  final response =
-      await http.get('https://jsonplaceholder.typicode.com/posts/1');
+const URL = 'https://tuyensinh.ctu.edu.vn/';
 
-  if (response.statusCode == 200) {
-    // If the call to the server was successful, parse the JSON
-    return Post.fromJson(json.decode(response.body));
-  } else {
-    // If that call was not successful, throw an error.
-    throw Exception('Failed to load post');
-  }
+Future<http.Response> fetch(String url) async {
+  final response = await http.get(url);
+
+  return response;
 }
 
-class Post {
-  final int userId;
-  final int id;
-  final String title;
-  final String body;
+class ResponseDisplay extends StatefulWidget {
+  @override
+  _ResponseDisplayState createState() => _ResponseDisplayState();
+}
 
-  Post({this.userId, this.id, this.title, this.body});
+class _ResponseDisplayState extends State<ResponseDisplay> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<http.Response>(
+      future: fetch(URL),
+      builder: (context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            return new Text('Press button to start');
+          case ConnectionState.waiting:
+            return new LinearProgressIndicator();
+          default:
+            if (snapshot.hasError)
+              return new Text(
+                'Error: ${snapshot.error}',
+                style: new TextStyle(color: Colors.redAccent),
+              );
+            else
+              return new ListView(
+                scrollDirection: Axis.vertical,
+                padding: EdgeInsets.all(16.0),
+                children: <Widget>[
+                  new Text(
+                    "Response Headers",
+                    style: new TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 18.0),
+                  ),
+                  new Card(
+                      margin: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 16.0),
+                      child: new Container(
+                        child: headersRendering(snapshot.data.headers),
+                        padding: EdgeInsets.all(16.0),
+                      )),
+                  new Text(
+                    "Response Body",
+                    style: new TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 18.0),
+                  ),
+                  new Card(
+                      margin: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 16.0),
+                      child: new Container(
+                        child: new Text(snapshot.data.body),
+                        padding: EdgeInsets.all(16.0),
+                      )),
+                ],
+              );
+        }
+      },
+    );
+  }
 
-  factory Post.fromJson(Map<String, dynamic> json) {
-    return Post(
-      userId: json['userId'],
-      id: json['id'],
-      title: json['title'],
-      body: json['body'],
+  Widget headersRendering(Map<String, String> headers) {
+    List list = new List<Widget>();
+
+    headers.forEach((key, value) {
+      list.add(new Text('$key : $value'));
+    });
+
+    return new Column(
+      children: list,
+      crossAxisAlignment: CrossAxisAlignment.start,
     );
   }
 }

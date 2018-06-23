@@ -13,7 +13,7 @@ class _TuyenSinhState extends State<TuyenSinh> {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Tuyển sinh - Đại học Cần Thơ',
+      title: 'Thông tin tuyển sinh CTU',
       home: new Home(),
       
       // initialRoute: '/login',
