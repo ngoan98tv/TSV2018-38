@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:tuyensinh/model/html.dart';
 
-const URL = 'https://tuyensinh.ctu.edu.vn/';
+const URL = 'https://tuyensinh.ctu.edu.vn';
 
 Future<http.Response> fetch(String url) async {
   final response = await http.get(url);
@@ -12,12 +12,12 @@ Future<http.Response> fetch(String url) async {
   return response;
 }
 
-class ResponseDisplay extends StatefulWidget {
+class DataDisplay extends StatefulWidget {
   @override
-  _ResponseDisplayState createState() => _ResponseDisplayState();
+  _DataDisplayState createState() => _DataDisplayState();
 }
 
-class _ResponseDisplayState extends State<ResponseDisplay> {
+class _DataDisplayState extends State<DataDisplay> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<http.Response>(
@@ -35,32 +35,23 @@ class _ResponseDisplayState extends State<ResponseDisplay> {
                 style: new TextStyle(color: Colors.redAccent),
               );
             else
-              return new ListView(
-                scrollDirection: Axis.vertical,
-                padding: EdgeInsets.all(16.0),
+              return new TabBarView(
                 children: <Widget>[
-                  new Text(
-                    "Response Headers",
-                    style: new TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 18.0),
+                  new ListView(
+                    scrollDirection: Axis.vertical,
+                    padding: EdgeInsets.all(16.0),
+                    children: <Widget>[linksRender(snapshot.data.body)],
                   ),
-                  new Card(
-                      margin: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 16.0),
-                      child: new Container(
-                        child: headersRendering(snapshot.data.headers),
-                        padding: EdgeInsets.all(16.0),
-                      )),
-                  new Text(
-                    "Response Body",
-                    style: new TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 18.0),
+                  new ListView(
+                    scrollDirection: Axis.vertical,
+                    padding: EdgeInsets.all(16.0),
+                    children: <Widget>[headersRender(snapshot.data.headers)],
                   ),
-                  new Card(
-                      margin: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 16.0),
-                      child: new Container(
-                        child: new Text(snapshot.data.body),
-                        padding: EdgeInsets.all(16.0),
-                      )),
+                  new ListView(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.all(16.0),
+                    children: <Widget>[new Text(snapshot.data.body)],
+                  )
                 ],
               );
         }
@@ -68,11 +59,40 @@ class _ResponseDisplayState extends State<ResponseDisplay> {
     );
   }
 
-  Widget headersRendering(Map<String, String> headers) {
+  Widget headersRender(Map<String, String> headers) {
     List list = new List<Widget>();
 
     headers.forEach((key, value) {
       list.add(new Text('$key : $value'));
+    });
+
+    return new Column(
+      children: list,
+      crossAxisAlignment: CrossAxisAlignment.start,
+    );
+  }
+
+  Widget linksRender(String html) {
+    List list = new List<Widget>();
+
+    getDocument(html).forEach((key, value) {
+      list.add(new ListTile(
+        title: new Text(
+          '$key',
+          overflow: TextOverflow.ellipsis,
+        ),
+        subtitle: new Text('$value', overflow: TextOverflow.ellipsis),
+        trailing: new Icon(Icons.navigate_next),
+        onTap: () {
+          showDialog(
+            context: context,
+            child: new SimpleDialog(
+              title: new Text('$key', overflow: TextOverflow.clip),
+              children: <Widget>[new Text('$value')],
+            ),
+          );
+        },
+      ));
     });
 
     return new Column(
