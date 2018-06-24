@@ -3,6 +3,7 @@ description: A Flutter project providing information of Can Tho University.
 
 dependencies:
   http: "^0.11.3+16"
+  html: any
   flutter:
     sdk: flutter
 
