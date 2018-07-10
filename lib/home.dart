@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'model/data.dart';
+import 'chat.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -10,19 +9,23 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return new DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-            title: TabBar(
-          tabs: <Widget>[
-            Tab(text: 'Menu', icon: Icon(Icons.link)),
-            Tab(text: 'Headers', icon: Icon(Icons.short_text)),
-            Tab(text: 'HTML', icon: Icon(Icons.code))
-          ],
-        )),
-        body: DataDisplay()
+    return Scaffold(
+      appBar: AppBar(
+        leading: new Icon(Icons.school),
+        title: new Text("Trang chủ"),
+        actions: <Widget>[
+          new IconButton(
+            icon: new Icon(Icons.chat),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Conversation())
+              );
+            },
+          ),
+        ],
       ),
+      body: new Column(),
     );
   }
 }
