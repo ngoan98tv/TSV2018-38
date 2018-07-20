@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'chat.dart';
+import 'drawer.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -11,7 +12,6 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: new Icon(Icons.school),
         title: new Text("Trang chủ"),
         actions: <Widget>[
           new IconButton(
@@ -26,6 +26,7 @@ class _HomeState extends State<Home> {
         ],
       ),
       body: new Column(),
+      drawer: mainDrawer(),
     );
   }
 }

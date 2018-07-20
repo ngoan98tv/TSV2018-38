@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:html/parser.dart' show parse;
+import 'package:http/http.dart' as http;
 import 'package:html/dom.dart';
 
 Map<String, String> getDocument(String html){
