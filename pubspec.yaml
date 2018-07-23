@@ -7,6 +7,9 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^0.1.2
+  html2md: "^0.1.5"
+  flutter_markdown: "^0.1.5"
+  url_launcher: ^3.0.3
 
 dev_dependencies:
   flutter_test:

@@ -1,27 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:html/dom.dart' as dom;
-import 'function.dart';
-import 'drawer.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
-import 'data.dart';
-import 'error.dart';
-import 'content.dart';
+import 'package:tuyensinh/data.dart';
+import 'package:tuyensinh/error.dart';
+import 'package:tuyensinh/main_view.dart';
 
-/// Main screen
-class Home extends StatefulWidget {
-  String url;
+/// Loading screen
+class Loading extends StatefulWidget {
+  final String url;
 
-  /// show the content of the url into the main screen
-  Home({
-    Key key,
-    this.url,
-  }) : super(key: key);
+  ///Loading data from the url, waiting on loading screen
+  Loading({Key key, @required this.url}) : super(key: key);
 
   @override
-  _HomeState createState() => _HomeState();
+  _LoadingState createState() => _LoadingState();
 }
 
-class _HomeState extends State<Home> {
+class _LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -37,8 +30,7 @@ class _HomeState extends State<Home> {
             if (snapshot.hasError) {
               pushNotification(context, snapshot.error.toString());
             } else {
-              //return _homepage(snapshot.data);
-              return _testpage(snapshot.data);
+              return MainView(info: snapshot.data);
             }
         }
       },
@@ -65,25 +57,4 @@ class _HomeState extends State<Home> {
               )
             ]));
   }
-
-  Widget _testpage(Information info) {
-    return new Scaffold(
-      appBar: new AppBar(title: new Text('Testing')),
-      body: new ListView.builder(
-        itemCount: info.img.length,
-        itemBuilder: (BuildContext context, int index) {
-          return new Card(
-            child: new Container(
-              margin: EdgeInsets.all(5.0),
-              child: new ListTile(
-                title: new Text('img'),
-                subtitle: new Text(getLink(info.img[index])),
-              )
-            ),
-          );
-        },
-      ),
-    );
-  }
-
 }
