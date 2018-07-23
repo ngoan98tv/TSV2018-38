@@ -2,7 +2,7 @@ import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart' as browser;
-import 'error.dart';
+import 'dart:async';
 import 'loading.dart';
 
 const homeLink = 'https://tuyensinh.ctu.edu.vn';
@@ -68,5 +68,69 @@ class Helper {
   static String correctLink(String url) {
     if (url.length > 4 && url.substring(0, 4) != 'http') return homeLink + url;
     return url;
+  }
+
+  /// Notify an error
+  static Future<Null> pushNotification(
+      BuildContext context, String error, String message) async {
+    return showDialog<Null>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return new AlertDialog(
+          title: new Text("What's happening!"),
+          content: new SingleChildScrollView(
+            child: new ListBody(
+              children: <Widget>[
+                new Text(
+                  error,
+                  style: new TextStyle(color: Colors.redAccent),
+                ),
+                new Text('Message: $message',
+                    style: new TextStyle(color: Colors.red)),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            new RaisedButton(
+              child: new Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// Return waiting screen
+  static Widget waitingScreen(String url) {
+    return new Container(
+        margin: EdgeInsets.all(0.0),
+        color: Colors.white,
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              new Image.asset(
+                'assets/logo_dhct.png',
+                height: 170.0,
+                width: 170.0,
+              ),
+              new Container(
+                margin: EdgeInsets.all(16.0),
+                child: Text(url,
+                    style: TextStyle(
+                        fontSize: 10.0,
+                        fontWeight: FontWeight.w100,
+                        decoration: TextDecoration.none,
+                        color: Colors.blueGrey)),
+              ),
+              new Container(
+                margin: EdgeInsets.all(16.0),
+                child: new LinearProgressIndicator(),
+              )
+            ]));
   }
 }

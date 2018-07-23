@@ -7,6 +7,35 @@ import 'package:html2md/html2md.dart' as html2md;
 import 'dart:async';
 import 'helper.dart';
 
+/// the first time fetch information from the URL
+Future<Information> fetch_1(BuildContext context, String url) async {
+  final response = await http.get(url);
+  final document = Helper.parse(response.body);
+
+  Information.art_hmenu = new MarkdownBody(
+    data: html2md
+        .convert(document.getElementsByClassName('art-hmenu').first.innerHtml),
+    onTapLink: (url) {
+      Helper.launch(context, url);
+    },
+  );
+
+  Information.art_block = new List();
+  Widget tmp;
+
+  document.getElementsByClassName('art-block').toList().forEach((block) {
+    try {
+      tmp = Information.getPost(
+          context, block, 'art-blockheader', 'art-blockcontent');
+      if (tmp != null) Information.art_block.add(tmp);
+    } catch (e) {
+      print('art-block error -> ${e.toString()}');
+    }
+  });
+
+  return new Information(context, document);
+}
+
 /// fetch information from the URL
 Future<Information> fetch(BuildContext context, String url) async {
   final response = await http.get(url);
@@ -21,13 +50,13 @@ class Information {
   Widget title;
 
   /// Navigation menu
-  Widget art_hmenu;
+  static Widget art_hmenu;
 
   /// List of posts
   List<Widget> art_post;
 
   /// List of blocks
-  List<Widget> art_block;
+  static List<Widget> art_block;
 
   /// Create an information object from HTML document
   Information(BuildContext context, dom.Document document) {
@@ -36,14 +65,6 @@ class Information {
     this.title =
         new Text(document.head.getElementsByTagName('title').first.text);
 
-    this.art_hmenu = new MarkdownBody(
-      data: html2md.convert(
-          document.getElementsByClassName('art-hmenu').first.innerHtml),
-      onTapLink: (url) {
-        Helper.launch(context, url);
-      },
-    );
-
     this.art_post = new List();
 
     document.getElementsByClassName('art-post').toList().forEach((post) {
@@ -51,25 +72,14 @@ class Information {
         tmp = getPost(context, post, 'art-postheader', 'art-postcontent');
         if (tmp != null) this.art_post.add(tmp);
       } catch (e) {
-        print('art-post error');
-      }
-    });
-
-    this.art_block = new List();
-
-    document.getElementsByClassName('art-block').toList().forEach((block) {
-      try {
-        tmp = getPost(context, block, 'art-blockheader', 'art-blockcontent');
-        if (tmp != null) this.art_block.add(tmp);
-      } catch (e) {
-        print('art-block error');
+        print('art-post error -> ${e.toString()}');
       }
     });
   }
 
   /// return a widget of the post from a post element
-  Widget getPost(BuildContext context, dom.Element post, String headerClass,
-      String contentClass) {
+  static Widget getPost(BuildContext context, dom.Element post,
+      String headerClass, String contentClass) {
     Widget header, content;
     if (post.hasContent()) {
       try {

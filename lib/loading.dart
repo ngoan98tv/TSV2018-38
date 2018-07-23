@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tuyensinh/data.dart';
-import 'package:tuyensinh/error.dart';
-import 'package:tuyensinh/main_view.dart';
+import 'data.dart';
+import 'helper.dart';
+import 'main_view.dart';
 
 /// Loading screen
 class Loading extends StatefulWidget {
@@ -22,13 +22,17 @@ class _LoadingState extends State<Loading> {
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            return _loading();
+            return Helper.waitingScreen(widget.url);
           case ConnectionState.none:
-            pushNotification(context, 'No connection.', snapshot.error.toString());
+            Helper.pushNotification(
+                context, 'No connection.', snapshot.error.toString());
             break;
           default:
             if (snapshot.hasError) {
-              pushNotification(context, 'An error occurred while fetching data', snapshot.error.toString());
+              Helper.pushNotification(
+                  context,
+                  'An error occurred while fetching data',
+                  snapshot.error.toString());
             } else {
               return MainView(info: snapshot.data);
             }
@@ -36,34 +40,43 @@ class _LoadingState extends State<Loading> {
       },
     );
   }
+}
 
-  /// Return loading screen
-  Widget _loading() {
-    return new Container(
-        margin: EdgeInsets.all(0.0),
-        color: Colors.white,
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              new Image.asset(
-                'assets/logo_dhct.png',
-                height: 170.0,
-                width: 170.0,
-              ),
-              new Container(
-                margin: EdgeInsets.all(16.0),
-                child: Text(widget.url,
-                    style: TextStyle(
-                        fontSize: 10.0,
-                        fontWeight: FontWeight.w100,
-                        decoration: TextDecoration.none,
-                        color: Colors.blueGrey)),
-              ),
-              new Container(
-                margin: EdgeInsets.all(16.0),
-                child: new LinearProgressIndicator(),
-              )
-            ]));
+/// Loading screen for the first time
+class Loading_1 extends StatefulWidget {
+  final String url;
+
+  ///Loading data from the url, waiting on loading screen
+  Loading_1({Key key, @required this.url}) : super(key: key);
+
+  @override
+  _Loading_1State createState() => _Loading_1State();
+}
+
+class _Loading_1State extends State<Loading_1> {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: fetch_1(context, widget.url),
+      builder: (context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return Helper.waitingScreen(widget.url);
+          case ConnectionState.none:
+            Helper.pushNotification(
+                context, 'No connection.', snapshot.error.toString());
+            break;
+          default:
+            if (snapshot.hasError) {
+              Helper.pushNotification(
+                  context,
+                  'An error occurred while fetching data',
+                  snapshot.error.toString());
+            } else {
+              return MainView(info: snapshot.data);
+            }
+        }
+      },
+    );
   }
 }

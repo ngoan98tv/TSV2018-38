@@ -14,10 +14,8 @@ class _TuyenSinhState extends State<TuyenSinh> {
 
     return new MaterialApp(
       title: 'Thông tin tuyển sinh CTU',
-      //home: new Home(url: 'https://tuyensinh.ctu.edu.vn/gioithieu/ly-do-chon-ctu'),
-      //initialRoute: '/login' ,
       routes: {
-        '/': (context) => new Loading(url: 'https://tuyensinh.ctu.edu.vn'),
+        '/': (context) => new Loading_1(url: 'https://tuyensinh.ctu.edu.vn'),
         '/login': (context) => new Login(),
         '/chat': (context) => new Conversation(),
       },
