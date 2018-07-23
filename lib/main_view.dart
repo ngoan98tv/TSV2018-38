@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tuyensinh/content.dart';
 import 'package:tuyensinh/drawer.dart';
 import 'data.dart';
 
@@ -16,7 +15,7 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     final appbar = new AppBar(
-      title: new Text(widget.info.title),
+      title: widget.info.title,
       actions: <Widget>[
         new IconButton(
           icon: new Icon(Icons.chat),
@@ -30,10 +29,12 @@ class _MainViewState extends State<MainView> {
     return Scaffold(
       appBar: appbar,
       drawer: mainDrawer(context, widget.info.art_hmenu),
-      body: new ListView(
-        children: postContent(
-            context, widget.info.art_postheader, widget.info.art_postcontent),
-      ),
+      body: new ListView.builder(
+        itemCount: widget.info.art_post.length,
+        itemBuilder: (context, index){
+          return widget.info.art_post[index];
+        },
+      )
     );
   }
 }

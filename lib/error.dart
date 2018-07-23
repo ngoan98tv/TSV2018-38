@@ -2,7 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 /// Notify an error
-Future<Null> pushNotification(BuildContext context, String error) async {
+Future<Null> pushNotification(
+    BuildContext context, String error, String message) async {
   return showDialog<Null>(
     context: context,
     barrierDismissible: false, // user must tap button!
@@ -16,6 +17,8 @@ Future<Null> pushNotification(BuildContext context, String error) async {
                 error,
                 style: new TextStyle(color: Colors.redAccent),
               ),
+              new Text('Message: $message',
+                  style: new TextStyle(color: Colors.red)),
             ],
           ),
         ),

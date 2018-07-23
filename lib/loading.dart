@@ -18,17 +18,17 @@ class _LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: fetch(widget.url),
+      future: fetch(context, widget.url),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
             return _loading();
           case ConnectionState.none:
-            pushNotification(context, snapshot.connectionState.toString());
+            pushNotification(context, 'No connection.', snapshot.error.toString());
             break;
           default:
             if (snapshot.hasError) {
-              pushNotification(context, snapshot.error.toString());
+              pushNotification(context, 'An error occurred while fetching data', snapshot.error.toString());
             } else {
               return MainView(info: snapshot.data);
             }
@@ -43,7 +43,7 @@ class _LoadingState extends State<Loading> {
         margin: EdgeInsets.all(0.0),
         color: Colors.white,
         child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               new Image.asset(
@@ -52,7 +52,16 @@ class _LoadingState extends State<Loading> {
                 width: 170.0,
               ),
               new Container(
-                margin: EdgeInsets.all(5.0),
+                margin: EdgeInsets.all(16.0),
+                child: Text(widget.url,
+                    style: TextStyle(
+                        fontSize: 10.0,
+                        fontWeight: FontWeight.w100,
+                        decoration: TextDecoration.none,
+                        color: Colors.blueGrey)),
+              ),
+              new Container(
+                margin: EdgeInsets.all(16.0),
                 child: new LinearProgressIndicator(),
               )
             ]));

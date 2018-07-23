@@ -1,53 +1,144 @@
-import 'package:html/parser.dart' show parse;
 import 'package:http/http.dart' as http;
-import 'package:html/dom.dart';
+import 'package:html/dom.dart' as dom;
+import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:html2md/html2md.dart' as html2md;
+
 import 'dart:async';
-import 'function.dart';
+import 'helper.dart';
 
 /// fetch information from the URL
-Future<Information> fetch(String url) async {
-    Information info = new Information();
-    
-    final response = await http.get(url);
-    //final document = parse(response.body);
-    final document = check_Img_links(response.body);
+Future<Information> fetch(BuildContext context, String url) async {
+  final response = await http.get(url);
+  final document = Helper.parse(response.body);
 
-    info.title = document.head.getElementsByTagName('title').first.text;
-    info.art_hmenu = document.getElementsByClassName('art-hmenu').first.innerHtml;
-    info.art_postheader = document.getElementsByClassName('art-postheader').toList();
-    info.art_postcontent = document.getElementsByClassName('art-postcontent').toList();
-    info.art_blockheader = document.getElementsByClassName('art-blockheader').toList();
-    info.art_blockcontent = document.getElementsByClassName('art-blockcontent').toList();
-
-    info.a = document.body.getElementsByTagName('a').toList();
-    info.img = document.body.getElementsByTagName('img').toList();
-
-    return info;
+  return new Information(context, document);
 }
 
 /// contain information of fetched data
 class Information {
-  /// page title
-  String title;
+  /// Page title
+  Widget title;
 
-  /// menu contain in HTML code.
-  String art_hmenu;
+  /// Navigation menu
+  Widget art_hmenu;
 
-  /// List of post header elements
-  List<Element> art_postheader;
+  /// List of posts
+  List<Widget> art_post;
 
-  /// List of post content elements
-  List<Element> art_postcontent;
+  /// List of blocks
+  List<Widget> art_block;
 
-  /// List of block header elements
-  List<Element> art_blockheader;
+  /// Create an information object from HTML document
+  Information(BuildContext context, dom.Document document) {
+    Widget tmp;
 
-  /// List of block content elements
-  List<Element> art_blockcontent;
+    this.title =
+        new Text(document.head.getElementsByTagName('title').first.text);
 
-  /// List of available links
-  List<Element> a;
+    this.art_hmenu = new MarkdownBody(
+      data: html2md.convert(
+          document.getElementsByClassName('art-hmenu').first.innerHtml),
+      onTapLink: (url) {
+        Helper.launch(context, url);
+      },
+    );
 
-  /// List of images
-  List<Element> img;
+    this.art_post = new List();
+
+    document.getElementsByClassName('art-post').toList().forEach((post) {
+      try {
+        tmp = getPost(context, post, 'art-postheader', 'art-postcontent');
+        if (tmp != null) this.art_post.add(tmp);
+      } catch (e) {
+        print('art-post error');
+      }
+    });
+
+    this.art_block = new List();
+
+    document.getElementsByClassName('art-block').toList().forEach((block) {
+      try {
+        tmp = getPost(context, block, 'art-blockheader', 'art-blockcontent');
+        if (tmp != null) this.art_block.add(tmp);
+      } catch (e) {
+        print('art-block error');
+      }
+    });
+  }
+
+  /// return a widget of the post from a post element
+  Widget getPost(BuildContext context, dom.Element post, String headerClass,
+      String contentClass) {
+    Widget header, content;
+    if (post.hasContent()) {
+      try {
+        if (post.getElementsByClassName(headerClass).isNotEmpty) {
+          if (post.getElementsByClassName(headerClass).first.text != '')
+            header =
+                new Text(post.getElementsByClassName(headerClass).first.text);
+        }
+      } catch (e) {
+        print('get header error -> ${e.toString()}');
+      }
+
+      try {
+        if (post.getElementsByClassName(contentClass).isNotEmpty) {
+          if (post.getElementsByClassName(contentClass).first.text != '')
+            content = new MarkdownBody(
+              data: html2md.convert(
+                  post.getElementsByClassName(contentClass).first.innerHtml),
+              onTapLink: (url) {
+                Helper.launch(context, url);
+              },
+            );
+        }
+      } catch (e) {
+        print('get content error -> ${e.toString()}');
+      }
+
+      if (header == null && content == null) {
+        print('returning null');
+        return null;
+      }
+
+      if (header == null) {
+        print('returning a post without header');
+        return new Card(
+            margin: EdgeInsets.all(10.0),
+            child: new Container(
+              margin: EdgeInsets.all(16.0),
+              child: content,
+            ));
+      }
+      if (content == null) {
+        print('returning a post without content');
+        return new Card(
+            margin: EdgeInsets.all(10.0),
+            child: new Container(
+              margin: EdgeInsets.all(16.0),
+              child: header,
+            ));
+      } else {
+        print('returning a full post');
+        return new Card(
+          margin: EdgeInsets.all(10.0),
+          child: new ExpansionTile(
+            leading: new Icon(
+              Icons.notifications,
+              color: Colors.blueGrey,
+            ),
+            title: header,
+            children: <Widget>[
+              new Container(
+                margin: EdgeInsets.all(16.0),
+                child: content,
+              )
+            ],
+          ),
+        );
+      }
+    }
+    return null;
+  }
 }
