@@ -24,15 +24,10 @@ class _LoadingState extends State<Loading> {
           case ConnectionState.waiting:
             return Helper.waitingScreen(widget.url);
           case ConnectionState.none:
-            Helper.pushNotification(
-                context, 'No connection.', snapshot.error.toString());
-            break;
+            return Helper.waitingScreen('Không có kết nối Internet');
           default:
             if (snapshot.hasError) {
-              Helper.pushNotification(
-                  context,
-                  'An error occurred while fetching data',
-                  snapshot.error.toString());
+              return Helper.waitingScreen('Không có kết nối Internet');
             } else {
               return MainView(info: snapshot.data);
             }
@@ -63,15 +58,10 @@ class _Loading_1State extends State<Loading_1> {
           case ConnectionState.waiting:
             return Helper.waitingScreen(widget.url);
           case ConnectionState.none:
-            Helper.pushNotification(
-                context, 'No connection.', snapshot.error.toString());
-            break;
+            return Helper.waitingScreen('Không có kết nối Internet');
           default:
             if (snapshot.hasError) {
-              Helper.pushNotification(
-                  context,
-                  'An error occurred while fetching data',
-                  snapshot.error.toString());
+              return Helper.waitingScreen('Không có kết nối Internet');
             } else {
               return MainView(info: snapshot.data);
             }

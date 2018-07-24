@@ -29,11 +29,8 @@ class _MainViewState extends State<MainView> {
     return Scaffold(
       appBar: appbar,
       drawer: mainDrawer(context, Information.art_hmenu),
-      body: new ListView.builder(
-        itemCount: widget.info.art_post.length,
-        itemBuilder: (context, index){
-          return widget.info.art_post[index];
-        },
+      body: new ListView(
+        children: widget.info.art_post,
       )
     );
   }

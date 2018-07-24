@@ -105,7 +105,7 @@ class Helper {
   }
 
   /// Return waiting screen
-  static Widget waitingScreen(String url) {
+  static Widget waitingScreen(String text) {
     return new Container(
         margin: EdgeInsets.all(0.0),
         color: Colors.white,
@@ -120,7 +120,7 @@ class Helper {
               ),
               new Container(
                 margin: EdgeInsets.all(16.0),
-                child: Text(url,
+                child: Text(text,
                     style: TextStyle(
                         fontSize: 10.0,
                         fontWeight: FontWeight.w100,
