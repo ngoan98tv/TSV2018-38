@@ -10,6 +10,7 @@ dependencies:
   html2md: "^0.1.5"
   flutter_markdown: "^0.1.5"
   url_launcher: ^3.0.3
+  flutter_dialogflow: ^0.0.1
 
 dev_dependencies:
   flutter_test:
@@ -32,6 +33,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/logo_dhct.png
+    - img/placeholder.png
  
 
   # An image asset can refer to one or more resolution-specific "variants", see
