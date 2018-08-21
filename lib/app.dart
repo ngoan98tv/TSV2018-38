@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'loading.dart';
-import 'login.dart';
 import 'chat.dart';
 
-class TuyenSinh extends StatefulWidget {
+///Booting and setting up routes
+class Booter extends StatefulWidget {
   @override
-  _TuyenSinhState createState() => _TuyenSinhState();
+  _BooterState createState() => _BooterState();
 }
 
-class _TuyenSinhState extends State<TuyenSinh> {
+class _BooterState extends State<Booter> {
   @override
   Widget build(BuildContext context) {
 
@@ -16,7 +16,6 @@ class _TuyenSinhState extends State<TuyenSinh> {
       title: 'Thông tin tuyển sinh CTU',
       routes: {
         '/': (context) => new Loading_1(url: 'https://tuyensinh.ctu.edu.vn'),
-        '/login': (context) => new Login(),
         '/chat': (context) => new Conversation(),
       },
     );

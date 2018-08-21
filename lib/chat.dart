@@ -41,7 +41,7 @@ class _ConversationState extends State<Conversation> {
 
   void Response(query) async {
     _textController.clear();
-    Dialogflow dialogflow =Dialogflow(token: "bc39b266289d41129ebf72200338eb10");
+    Dialogflow dialogflow = Dialogflow(token: dialogflowToken);
     AIResponse response = await dialogflow.sendQuery(query);
     ChatMessage message = new ChatMessage(
       text: response.getMessageResponse(),

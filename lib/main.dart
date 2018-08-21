@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'app.dart';
 
-void main() => runApp(new TuyenSinh());
+void main() => runApp(new Booter());
