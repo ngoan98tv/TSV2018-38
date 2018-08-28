@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dialogflow/flutter_dialogflow.dart';
-import 'config.dart';
+import 'app.dart';
 
 class Conversation extends StatefulWidget {
   
@@ -41,7 +41,7 @@ class _ConversationState extends State<Conversation> {
 
   void Response(query) async {
     _textController.clear();
-    Dialogflow dialogflow = Dialogflow(token: dialogflowToken);
+    Dialogflow dialogflow = Dialogflow(token: App.dialogflowToken);
     AIResponse response = await dialogflow.sendQuery(query);
     ChatMessage message = new ChatMessage(
       text: response.getMessageResponse(),
