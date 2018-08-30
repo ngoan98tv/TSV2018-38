@@ -27,11 +27,11 @@ class _PresenterState extends State<Presenter> {
         ),
       ],
     );
-
-    return Scaffold(
-      appBar: appbar,
-      drawer: mainDrawer(context, App.mainMenu),
-      body: ListView(children: App.postData[widget.url]),
-    );
+    if (App.postData[widget.url] != null)
+      return Scaffold(
+        appBar: appbar,
+        drawer: mainDrawer(context, App.mainMenu),
+        body: ListView(children: App.postData[widget.url]),
+      );
   }
 }

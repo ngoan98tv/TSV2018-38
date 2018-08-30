@@ -46,13 +46,6 @@ class Loader extends StatelessWidget {
     App.titles[url] = document.head.getElementsByTagName('title').first.text;
   }
 
-  ///Get posts form the URL by className
-  // static Future<void> loadPosts(
-  //     BuildContext context, String url, String className) async {
-  //   var document = await Loader.fetch(url);
-  //   App.postData[url] = getPosts(context, document, className);
-  // }
-
   ///Get posts from a HTML document by classPrefix
   static List<Widget> getPosts(
       BuildContext context, dom.Document document, String classPrefix) {
@@ -107,7 +100,9 @@ class Loader extends StatelessWidget {
           //add a complete post
           listPosts.add(new Card(
             margin: EdgeInsets.all(10.0),
-            child: new ExpansionTile(
+            child: new Container(
+              margin: EdgeInsets.fromLTRB(0.0,6.0,0.0,6.0),
+                child: new ExpansionTile(
               leading: new Icon(
                 Icons.notifications,
                 color: Colors.blueGrey,
@@ -119,7 +114,7 @@ class Loader extends StatelessWidget {
                   child: content,
                 )
               ],
-            ),
+            )),
           ));
         }
       }

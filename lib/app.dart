@@ -11,13 +11,13 @@ const homeLink = 'https://tuyensinh.ctu.edu.vn';
 class App extends StatefulWidget {
   ///Access token of DialogFlow for Chat feature.
   static var dialogflowToken = "bc39b266289d41129ebf72200338eb10";
-  
+
   ///Content of main menu.
   static Widget mainMenu;
 
   ///List of blocks content consist of notification block.
   static List blockData;
-  
+
   ///Data of links, format as <String link, List posts>
   static var postData = new Map();
 
@@ -42,17 +42,17 @@ class App extends StatefulWidget {
   static void launch(BuildContext context, String url) async {
     if (!url.contains('#')) {
       if (url == '/')
-        Navigator.of(context).pushNamed('/');
+        Navigator.popUntil(context, ModalRoute.withName('/'));
       else {
         url = correctLink(url);
         if (url.contains('tuyensinh.ctu.edu.vn') &&
             url.substring(url.length - 3) != 'pdf' &&
-            url.substring(url.length - 3) != 'jpg'){
-              await Loader.fetch(context, url);
-           Navigator.of(context).push(new MaterialPageRoute(
-               builder: (BuildContext context) => Presenter(url)));
-              }
-        else if (await browser.canLaunch(url)) {
+            url.substring(url.length - 3) != 'jpg') {
+          await Loader.fetch(context, url);
+          Navigator.pop(context);
+          Navigator.of(context).push(new MaterialPageRoute(
+              builder: (BuildContext context) => Presenter(url)));
+        } else if (await browser.canLaunch(url)) {
           await browser.launch(url, forceWebView: false);
         } else {
           pushNotification(context, 'Could not launch $url', '');
@@ -133,6 +133,7 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  String link;
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -141,7 +142,7 @@ class _AppState extends State<App> {
       routes: {
         '/': (context) => new Presenter(homeLink),
         '/chat': (context) => new Conversation(),
-        '/load': (context) => new Loader(url: homeLink),
+        '/load': (context) => new Loader(url: homeLink,),
       },
     );
   }
