@@ -40,9 +40,18 @@ class App extends StatefulWidget {
 
   ///Launch to an URL
   static void launch(BuildContext context, String url) async {
+    
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return App.waitingScreen();
+      } 
+    );
+
     if (!url.contains('#')) {
       if (url == '/')
-        Navigator.popUntil(context, ModalRoute.withName('/'));
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/', ModalRoute.withName('/'));
       else {
         url = correctLink(url);
         if (url.contains('tuyensinh.ctu.edu.vn') &&
@@ -101,8 +110,19 @@ class App extends StatefulWidget {
     );
   }
 
-  ///Show waiting screen while loading
-  static Widget waitingScreen(String text) {
+  ///Show waiting notification
+  static Widget waitingScreen(){
+    return new Opacity(
+      opacity: 0.7,
+      child: new AlertDialog(
+        title: new Text('Đang tải...'),
+        content: LinearProgressIndicator(),
+      )
+    );
+  }
+
+  ///Show loading screen while loading
+  static Widget loadingScreen(String text) {
     return new Container(
         margin: EdgeInsets.all(0.0),
         color: Colors.white,
@@ -142,7 +162,9 @@ class _AppState extends State<App> {
       routes: {
         '/': (context) => new Presenter(homeLink),
         '/chat': (context) => new Conversation(),
-        '/load': (context) => new Loader(url: homeLink,),
+        '/load': (context) => new Loader(
+              url: homeLink,
+            ),
       },
     );
   }

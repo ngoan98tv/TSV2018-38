@@ -23,10 +23,10 @@ class Loader extends StatelessWidget {
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            return App.waitingScreen(url);
+            return App.loadingScreen(url);
           default:
             if (snapshot.hasError) {
-              return App.waitingScreen('Không có kết nối Internet');
+              return App.loadingScreen('Không có kết nối Internet');
             } else {
               return Presenter(url);
             }
