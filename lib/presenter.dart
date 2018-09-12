@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart' as browser;
 import 'package:html/dom.dart' as dom;
 import 'dart:async';
@@ -46,6 +48,7 @@ class _PresenterState extends State<Presenter> {
               return loadingScreen(widget.url);
             default:
               if (snapshot.hasError) {
+                print("Load error: ${snapshot.error.toString()}");
                 return loadingScreen('Không có kết nối Internet');
               } else {
                 return new Scaffold(
@@ -344,9 +347,34 @@ class _PresenterState extends State<Presenter> {
     );
   }
 
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    return directory.path;
+  }
+
   ///Convert relative URL to absolute URL of images and parse document
   Future<void> parse(BuildContext context, String url) async {
-    var html = await fetch(url);
+    var html;
+    final path = await _localPath;
+    var file = File('$path/${url.hashCode}.txt');
+
+    await fetch(url).then((response) {
+      html = response;
+      file.writeAsString(html).then((value){
+        print("Write complete: ${value.path}");
+      }).catchError((e) {
+        print("File write error: $e");
+      });
+    }).catchError((e) async {
+      await file.readAsString().then((value){
+        html = value;
+        print("Read complete: ${file.path}");
+      }).catchError((e){
+        print("File read error: $e");
+      });
+    });
+
     var document = parser.parse(html);
     final img = document.body.getElementsByTagName('img').toList();
 
