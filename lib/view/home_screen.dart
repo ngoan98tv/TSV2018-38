@@ -41,8 +41,9 @@ class _HomeState extends State<Home> {
     if (!link.contains('#')) {
       link = correctLink(link);
       if (link.contains('tuyensinh.ctu.edu.vn') &&
-          link.substring(link.length - 3) != 'pdf' &&
-          link.substring(link.length - 3) != 'jpg') {
+          !(link
+              .substring(link.length - 4)
+              .contains(new RegExp(r'[.]\w{3}', caseSensitive: false)))) {
         setState(() {
           url = link;
         });
