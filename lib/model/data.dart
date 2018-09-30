@@ -90,6 +90,6 @@ String getLink(dom.Element element) {
 ///Correct a link to http standard
 String correctLink(String url) {
   if (url == '/') return App.home;
-  if (!url.contains(r'http.*')) return App.home + url;
+  if (!(url.contains(new RegExp(r'http.*')))) return App.home + url;
   return url;
 }

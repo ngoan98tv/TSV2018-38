@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:tuyensinh/view/home_screen.dart';
-//import 'chat.dart';
+import 'package:tuyensinh/view/chat_screen.dart';
 
 class App extends StatefulWidget {
   static final home = "https://tuyensinh.ctu.edu.vn";
@@ -27,7 +27,7 @@ class _AppState extends State<App> {
       title: 'Thông tin tuyển sinh CTU',
       home: Home(),
       routes: {
-//        '/chat': (context) => new Conversation(),
+        '/chat': (context) => new ChatScreen(),
       },
     );
   }

@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 
 class LoadingScreen extends StatelessWidget {
   final String message;
+  final VoidCallback reload;
+  final bool allowReload;
 
-  const LoadingScreen({Key key, @required this.message}) : super(key: key);
+  const LoadingScreen(
+      {Key key, @required this.message, this.reload, this.allowReload = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +32,15 @@ class LoadingScreen extends StatelessWidget {
                         decoration: TextDecoration.none,
                         color: Colors.blueGrey)),
               ),
+              allowReload
+                  ? new OutlineButton(
+                      child: Text(
+                        'Tải lại',
+                        style: Theme.of(context).textTheme.body1,
+                      ),
+                      onPressed: reload,
+                    )
+                  : new SizedBox(),
               new Container(
                 margin: EdgeInsets.all(16.0),
                 child: new LinearProgressIndicator(),

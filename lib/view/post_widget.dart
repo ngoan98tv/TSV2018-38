@@ -18,15 +18,14 @@ class Post extends StatelessWidget {
     List<Widget> content;
 
     try {
-      title = this.getTitle();
+      title = getTitle;
     } catch (e) {
       print('>>> Title error: $e');
       print(">>> ${post.toString()}");
     }
 
     try {
-      
-      content = this.getContent();
+      content = getContent;
     } catch (e) {
       print(">>> Content error: $e");
       print(">>> ${post.toString()}");
@@ -68,7 +67,7 @@ class Post extends StatelessWidget {
     );
   }
 
-  List<Widget> getContent() {
+  List<Widget> get getContent {
     dom.Element postcontent =
         post.getElementsByClassName('art-postcontent').first ??
             post.getElementsByClassName('art-blockcontent').first;
@@ -103,6 +102,9 @@ class Post extends StatelessWidget {
           autoPlay: true,
           looping: true,
         ));
+      } else if (element.outerHtml.contains('table')) {
+        print(">>>> Table detected");
+        //Table goes here
       } else {
         content.add(new MarkdownBody(
           data: html2md.convert(element.outerHtml),
@@ -127,8 +129,7 @@ class Post extends StatelessWidget {
     return content;
   }
 
-  String getTitle() {
-    return post.getElementsByClassName('art-postheader').first.text ??
-        post.getElementsByClassName('art-blockheader').first.text;
-  }
+  String get getTitle =>
+      post.getElementsByClassName('art-postheader').first.text ??
+      post.getElementsByClassName('art-blockheader').first.text;
 }

@@ -12,40 +12,54 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String url = App.home;
+  String _url = App.home;
+  BuildContext _scaffContext;
+  int _backTapped = 0;
 
   @override
   Widget build(BuildContext context) {
-    if (App.posts[url] != null)
-      return scaff;
-    else
-      return FutureBuilder(
-        future: parse(url),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return LoadingScreen(message: url);
-            default:
-              if (snapshot.hasError) {
-                print("Load error: ${snapshot.error.toString()}");
-                return LoadingScreen(message: 'Không tìm thấy dữ liệu!');
-              } else {
-                return scaff;
-              }
-          }
-        },
+    if (App.posts[_url] != null)
+      return WillPopScope(
+        onWillPop: _preventExit,
+        child: _scaff,
       );
+    else
+      return WillPopScope(
+          onWillPop: _preventExit,
+          child: FutureBuilder(
+            future: parse(_url),
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return LoadingScreen(message: _url);
+                default:
+                  if (snapshot.hasError) {
+                    print("Load error: ${snapshot.error.toString()}");
+                    return LoadingScreen(
+                      message:
+                          'Không tìm thấy dữ liệu! Vui lòng kiểm tra kết nối mạng.',
+                      allowReload: true,
+                      reload: () {
+                        _load(_url);
+                      },
+                    );
+                  } else {
+                    return _scaff;
+                  }
+              }
+            },
+          ));
   }
 
   void _load(String link) {
     if (!link.contains('#')) {
       link = correctLink(link);
-      if (link.contains('tuyensinh.ctu.edu.vn') &&
+      if (link.contains(App.home) &&
           !(link
               .substring(link.length - 4)
               .contains(new RegExp(r'[.]\w{3}', caseSensitive: false)))) {
         setState(() {
-          url = link;
+          _url = link;
         });
       } else {
         browser.launch(link, forceWebView: false);
@@ -53,9 +67,28 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Scaffold get scaff => new Scaffold(
+  Future<bool> _preventExit() async {
+    _backTapped++;
+    if (_backTapped == 1) {
+      Scaffold.of(_scaffContext)
+          .showSnackBar(new SnackBar(
+            content: Text('Nhấp lần nữa để thoát!'),
+            duration: Duration(seconds: 3),
+            //  action: SnackBarAction(label: 'OK', onPressed: () {})
+          ))
+          .closed.then((reason) {
+        _backTapped = 0;
+      });
+
+      return false;
+    }
+    _backTapped = 0;
+    return true;
+  }
+
+  Scaffold get _scaff => new Scaffold(
         appBar: new AppBar(
-          title: new Text(App.titles[url]),
+          title: new Text(App.titles[_url]),
           actions: <Widget>[
             new IconButton(
               icon: new Icon(Icons.chat),
@@ -72,11 +105,14 @@ class _HomeState extends State<Home> {
             Navigator.pop(context);
           },
         ),
-        body: ListView.builder(
-          itemCount: App.posts[url].length,
-          itemBuilder: (BuildContext context, int i) {
-            return Post(post: App.posts[url][i], onTap: _load);
-          },
-        ),
+        body: Builder(builder: (BuildContext context) {
+          _scaffContext = context;
+          return ListView.builder(
+            itemCount: App.posts[_url].length,
+            itemBuilder: (BuildContext context, int i) {
+              return Post(post: App.posts[_url][i], onTap: _load);
+            },
+          );
+        }),
       );
 }
