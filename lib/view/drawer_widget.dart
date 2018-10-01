@@ -50,6 +50,7 @@ class DrawerMenu extends StatelessWidget {
     });
 
     listmenu.add(new ExpansionTile(
+      initiallyExpanded: true,
       title: new Text('Liên hệ'),
       children: <Widget>[
         new Column(
