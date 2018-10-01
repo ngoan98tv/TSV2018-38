@@ -5,6 +5,7 @@ import 'package:html/dom.dart' as dom;
 import 'package:tuyensinh/model/data.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
+import 'package:tuyensinh/view/table_widget.dart';
 
 class Post extends StatelessWidget {
   final MarkdownTapLinkCallback onTap;
@@ -104,7 +105,7 @@ class Post extends StatelessWidget {
         ));
       } else if (element.outerHtml.contains('table')) {
         print(">>>> Table detected");
-        //Table goes here
+        content.add(TableBuilder(tableElement: element, onTap: onTap,));
       } else {
         content.add(new MarkdownBody(
           data: html2md.convert(element.outerHtml),
