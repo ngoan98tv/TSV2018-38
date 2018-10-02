@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
                     print("Load error: ${snapshot.error.toString()}");
                     return LoadingScreen(
                       message:
-                          'Không tìm thấy dữ liệu! Vui lòng kiểm tra kết nối mạng.',
+                          'Không tìm thấy dữ liệu!',
                       allowReload: true,
                       allowGoHome: true,
                       reload: () {
