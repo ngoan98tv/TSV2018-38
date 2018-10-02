@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
-import 'package:tuyensinh/view/home_screen.dart';
-import 'package:tuyensinh/view/chat_screen.dart';
+import 'package:tuyensinh_ctu/view/home_screen.dart';
+import 'package:tuyensinh_ctu/view/chat_screen.dart';
 
 class App extends StatefulWidget {
   static final home = "https://tuyensinh.ctu.edu.vn";

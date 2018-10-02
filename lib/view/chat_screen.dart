@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_dialogflow/flutter_dialogflow.dart';
-import 'package:tuyensinh/app.dart';
-import 'package:tuyensinh/view/message_widget.dart';
+import 'package:tuyensinh_ctu/app.dart';
+import 'package:tuyensinh_ctu/view/message_widget.dart';
 
 class ChatScreen extends StatefulWidget {
   @override

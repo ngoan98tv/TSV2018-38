@@ -1,7 +1,7 @@
 import 'package:html/dom.dart' as dom;
 import 'package:http/http.dart' as http;
 import 'dart:io';
-import 'package:tuyensinh/app.dart';
+import 'package:tuyensinh_ctu/app.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:html/parser.dart' as parser;
 

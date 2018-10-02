@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tuyensinh/app.dart';
-import 'package:tuyensinh/model/data.dart';
-import 'package:tuyensinh/view/loading_screen.dart';
-import 'package:tuyensinh/view/post_widget.dart';
-import 'package:tuyensinh/view/drawer_widget.dart';
+import 'package:tuyensinh_ctu/app.dart';
+import 'package:tuyensinh_ctu/model/data.dart';
+import 'package:tuyensinh_ctu/view/loading_screen.dart';
+import 'package:tuyensinh_ctu/view/post_widget.dart';
+import 'package:tuyensinh_ctu/view/drawer_widget.dart';
+import 'package:tuyensinh_ctu/view/detail_screen.dart';
 import 'package:url_launcher/url_launcher.dart' as browser;
 
 class Home extends StatefulWidget {
@@ -39,8 +40,12 @@ class _HomeState extends State<Home> {
                       message:
                           'Không tìm thấy dữ liệu! Vui lòng kiểm tra kết nối mạng.',
                       allowReload: true,
+                      allowGoHome: true,
                       reload: () {
                         _load(_url);
+                      },
+                      loadHome: () {
+                        _load(App.home);
                       },
                     );
                   } else {
@@ -67,6 +72,23 @@ class _HomeState extends State<Home> {
     }
   }
 
+  void _launch(String link) {
+    if (!link.contains('#')) {
+      link = correctLink(link);
+      if (link.contains(App.home) &&
+          !(link
+              .substring(link.length - 4)
+              .contains(new RegExp(r'[.]\w{3}', caseSensitive: false)))) {
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => DetailScreen(url: link)));
+      } else {
+        browser.launch(link, forceWebView: false).catchError((e) {
+          print("Error occurred: $e");
+        });
+      }
+    }
+  }
+
   Future<bool> _preventExit() async {
     _backTapped++;
     if (_backTapped == 1) {
@@ -76,7 +98,8 @@ class _HomeState extends State<Home> {
             duration: Duration(seconds: 3),
             //  action: SnackBarAction(label: 'OK', onPressed: () {})
           ))
-          .closed.then((reason) {
+          .closed
+          .then((reason) {
         _backTapped = 0;
       });
 
@@ -110,7 +133,7 @@ class _HomeState extends State<Home> {
           return ListView.builder(
             itemCount: App.posts[_url].length,
             itemBuilder: (BuildContext context, int i) {
-              return Post(post: App.posts[_url][i], onTap: _load);
+              return Post(post: App.posts[_url][i], onTap: _launch);
             },
           );
         }),

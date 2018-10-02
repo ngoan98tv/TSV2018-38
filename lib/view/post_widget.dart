@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:html2md/html2md.dart' as html2md;
 import 'package:html/dom.dart' as dom;
-import 'package:tuyensinh/model/data.dart';
+import 'package:tuyensinh_ctu/model/data.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
-import 'package:tuyensinh/view/table_widget.dart';
+import 'package:tuyensinh_ctu/view/table_widget.dart';
 
 class Post extends StatelessWidget {
   final MarkdownTapLinkCallback onTap;

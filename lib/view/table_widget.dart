@@ -12,7 +12,6 @@ class TableBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> test = new List();
     List<Widget> tables = new List();
     List<TableRow> rows = new List();
     List<Widget> cells = new List();
