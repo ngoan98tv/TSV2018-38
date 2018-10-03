@@ -10,7 +10,6 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final List<ChatMessage> _messages = <ChatMessage>[];
   final TextEditingController _textController = new TextEditingController();
 
   ///return a input field
@@ -48,14 +47,14 @@ class _ChatScreenState extends State<ChatScreen> {
       type: false,
     );
     setState(() {
-      _messages.insert(0, message);
+      App.messages.insert(0, message);
     });
   }
 
   ///Send a query to Dialogflow and get response message
   Future<String> response(query) async {
     _textController.clear();
-    Dialogflow dialogflow = Dialogflow(token: App.dialogflowToken);
+    Dialogflow dialogflow = Dialogflow(token: App.dialogflowToken, sessionId: App.sessionId);
     AIResponse response = await dialogflow.sendQuery(query);
     return response.getMessageResponse();
   }
@@ -68,7 +67,7 @@ class _ChatScreenState extends State<ChatScreen> {
       type: true,
     );
     setState(() {
-      _messages.insert(0, message);
+      App.messages.insert(0, message);
     });
 
     response(text).then((response) {
@@ -90,8 +89,8 @@ class _ChatScreenState extends State<ChatScreen> {
             child: new ListView.builder(
           padding: new EdgeInsets.all(8.0),
           reverse: true,
-          itemBuilder: (_, int index) => _messages[index],
-          itemCount: _messages.length,
+          itemBuilder: (_, int index) => App.messages[index],
+          itemCount: App.messages.length,
         )),
         new Divider(height: 1.0),
         new Container(
