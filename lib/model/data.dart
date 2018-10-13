@@ -93,3 +93,5 @@ String correctLink(String url) {
   if (!(url.contains(new RegExp(r'http.*')))) return App.home + url;
   return url;
 }
+
+enum MessageType {sys, me, other}

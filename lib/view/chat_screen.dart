@@ -2,6 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_dialogflow/flutter_dialogflow.dart';
 import 'package:tuyensinh_ctu/app.dart';
+import 'package:tuyensinh_ctu/model/data.dart';
+import 'package:url_launcher/url_launcher.dart' as browser;
+import 'package:tuyensinh_ctu/view/detail_screen.dart';
 import 'package:tuyensinh_ctu/view/message_widget.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -11,6 +14,17 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _textController = new TextEditingController();
+
+
+  @override
+  void initState(){
+    super.initState();
+    App.messages.insert(0,new ChatMessage(
+      text: "Kelly là Chatbot tư vấn, đang trong quá trình huấn luyện, vui lòng sử dụng tiếng Việt có dấu để nhận được phản hồi tốt nhất.",
+      onTap: _launch,
+      type: MessageType.sys,
+    ));
+  }
 
   ///return a input field
   Widget _buildTextComposer() {
@@ -44,7 +58,8 @@ class _ChatScreenState extends State<ChatScreen> {
   void showResponse(String response) {
     ChatMessage message = new ChatMessage(
       text: response,
-      type: false,
+      type: MessageType.other,
+      onTap: _launch,
     );
     setState(() {
       App.messages.insert(0, message);
@@ -64,7 +79,8 @@ class _ChatScreenState extends State<ChatScreen> {
     _textController.clear();
     ChatMessage message = new ChatMessage(
       text: text,
-      type: true,
+      type: MessageType.me,
+      onTap: _launch,
     );
     setState(() {
       App.messages.insert(0, message);
@@ -99,6 +115,23 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ]),
     );
+  }
+
+  void _launch(String link) {
+    if (!link.contains('#')) {
+      link = correctLink(link);
+      if (link.contains(App.home) &&
+          !(link
+              .substring(link.length - 4)
+              .contains(new RegExp(r'[.]\w{3}', caseSensitive: false)))) {
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => DetailScreen(url: link)));
+      } else {
+        browser.launch(link, forceWebView: false).catchError((e) {
+          print("Error occurred: $e");
+        });
+      }
+    }
   }
 }
 
