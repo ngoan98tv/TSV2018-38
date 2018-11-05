@@ -13,9 +13,7 @@ dependencies:
   path_provider: ^0.4.1
   chewie: ^0.7.0
   video_player: ^0.6.4
-  flutter_dialogflow: 
-    git: 
-      url: git://github.com/ngoan98tv/flutter_dialogflow.git
+  dialogflow: ^0.1.0
 
 dev_dependencies:
   flutter_test:

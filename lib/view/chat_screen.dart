@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_dialogflow/flutter_dialogflow.dart';
+import 'package:dialogflow/dialogflow.dart';
 import 'package:tuyensinh_ctu/app.dart';
 import 'package:tuyensinh_ctu/model/data.dart';
 import 'package:url_launcher/url_launcher.dart' as browser;
