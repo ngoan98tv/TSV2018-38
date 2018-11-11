@@ -145,8 +145,9 @@ class _DetailScreenState extends State<DetailScreen> {
         content.add(new Chewie(
           videoControll,
           aspectRatio: 3 / 2,
-          autoPlay: true,
-          looping: true,
+          autoPlay: false,
+          looping: false,
+          autoInitialize: true,
         ));
       } else if (element.outerHtml.contains('table')) {
         print(">>>> Table detected");
