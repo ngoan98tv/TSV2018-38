@@ -49,46 +49,68 @@ class DrawerMenu extends StatelessWidget {
       }
     });
 
-    listmenu.add(new ExpansionTile(
-      initiallyExpanded: true,
-      title: new Text('Liên hệ'),
+    listmenu.add(new Column(
       children: <Widget>[
-        new Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            new FlatButton(
-              child: new Text(
-                  '- Địa chỉ: Đường 3/2, Quận Ninh Kiều, TP. Cần Thơ',
-                  style: TextStyle(color: Colors.blue)),
-              onPressed: () {
-                laucher.launch('https://goo.gl/maps/Yt72WnVJeX42');
-              },
-            ),
-            new FlatButton(
-              child: new Text('- Điện thoại: 0292 3872 728',
-                  style: TextStyle(color: Colors.blue)),
-              onPressed: () {
-                laucher.launch('tel:02923872728');
-              },
-            ),
-            new FlatButton(
-              child: new Text('- Email: tuyensinh@ctu.edu.vn',
-                  style: TextStyle(color: Colors.blue)),
-              onPressed: () {
-                laucher.launch('mailto:tuyensinh@ctu.edu.vn');
-              },
-            ),
-            new FlatButton(
-              child: new Text(
-                '- Facebook: ctu.tvts',
-                style: TextStyle(color: Colors.blue),
+        new FlatButton(
+          color: Colors.amber,
+          child: new Row(
+            children: <Widget>[
+              new Icon(
+                Icons.location_city,
+                size: 18.0,
               ),
-              onPressed: () {
-                laucher.launch('https://fb.com/ctu.tvts/');
-              },
-            ),
-          ],
-        )
+              new Text(' Đường 3/2, Q. Ninh Kiều, TP. Cần Thơ'),
+            ],
+          ),
+          onPressed: () {
+            laucher.launch('https://goo.gl/maps/Yt72WnVJeX42');
+          },
+        ),
+        new FlatButton(
+          color: Colors.blue,
+          child: new Row(
+            children: <Widget>[
+              new Icon(
+                Icons.phone,
+                size: 18.0,
+              ),
+              new Text(' 0292 3872 728')
+            ],
+          ),
+          onPressed: () {
+            laucher.launch('tel:02923872728');
+          },
+        ),
+        new FlatButton(
+          color: Colors.deepOrange,
+          child: new Row(
+            children: <Widget>[
+              new Icon(
+                Icons.email,
+                size: 18.0,
+              ),
+              new Text(' tuyensinh@ctu.edu.vn')
+            ],
+          ),
+          onPressed: () {
+            laucher.launch('mailto:tuyensinh@ctu.edu.vn');
+          },
+        ),
+        new FlatButton(
+          color: Colors.indigo,
+          child: new Row(
+            children: <Widget>[
+              new Icon(
+                Icons.feedback,
+                size: 18.0,
+              ),
+              new Text(' facebook: ctu.tvts')
+            ],
+          ),
+          onPressed: () {
+            laucher.launch('https://facebook.com/ctu.tvts/');
+          },
+        ),
       ],
     ));
 
