@@ -111,6 +111,21 @@ class DrawerMenu extends StatelessWidget {
             laucher.launch('https://facebook.com/ctu.tvts/');
           },
         ),
+        new FlatButton(
+          color: Colors.teal,
+          child: new Row(
+            children: <Widget>[
+              new Icon(
+                Icons.link,
+                size: 18.0,
+              ),
+              new Text(' tuyensinh.ctu.edu.vn')
+            ],
+          ),
+          onPressed: () {
+            laucher.launch('https://tuyensinh.ctu.edu.vn/');
+          },
+        ),
       ],
     ));
 
