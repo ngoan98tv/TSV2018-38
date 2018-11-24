@@ -20,7 +20,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState(){
     super.initState();
     App.messages.insert(0,new ChatMessage(
-      text: "Kelly là Chatbot tư vấn, đang trong quá trình huấn luyện, vui lòng sử dụng tiếng Việt có dấu để nhận được phản hồi tốt nhất.",
+      text: "Kelly là Chatbot tư vấn, đang trong quá trình huấn luyện, vui lòng sử dụng Tiếng Việt có dấu để nhận được phản hồi tốt nhất.",
       onTap: _launch,
       type: MessageType.sys,
     ));
