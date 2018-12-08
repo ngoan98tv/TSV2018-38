@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'package:tuyensinh_ctu/app.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:tuyensinh_ctu/config.dart';
 import 'package:html/parser.dart' as parser;
 
 ///Parse the document into App data
@@ -45,12 +46,12 @@ Future<void> parse(String url) async {
 
   links.forEach((value) {
     if (value.length > 4 && value.substring(0, 4) != 'http')
-      html = html.replaceAll(value, App.home + value);
+      html = html.replaceAll(value, home + value);
   });
 
   document = parser.parse(html);
 
-  App.menu = document.getElementsByClassName('art-hmenu').first;
+  App.menu = document.getElementsByClassName(menu_class).first;
   App.posts[url] = getPosts(document);
   App.titles[url] = document.head.getElementsByTagName('title').first.text;
 
@@ -71,7 +72,7 @@ Future<String> get _localPath async {
 
 ///Get posts elements from the HTML document
 List<dom.Element> getPosts(dom.Document document) {
-  List<dom.Element> listPost = document.getElementsByClassName('art-post').toList();
+  List<dom.Element> listPost = document.getElementsByClassName(post_class).toList();
   listPost.removeWhere((element) => element.text.trim() == '');
   return listPost;
 }
@@ -89,8 +90,8 @@ String getLink(dom.Element element) {
 
 ///Correct a link to http standard
 String correctLink(String url) {
-  if (url == '/') return App.home;
-  if (!(url.contains(new RegExp(r'http.*')))) return App.home + url;
+  if (url == '/') return home;
+  if (!(url.contains(new RegExp(r'http.*')))) return home + url;
   return url;
 }
 

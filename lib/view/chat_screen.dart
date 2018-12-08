@@ -6,6 +6,7 @@ import 'package:tuyensinh_ctu/model/data.dart';
 import 'package:url_launcher/url_launcher.dart' as browser;
 import 'package:tuyensinh_ctu/view/detail_screen.dart';
 import 'package:tuyensinh_ctu/view/message_widget.dart';
+import 'package:tuyensinh_ctu/config.dart';
 
 class ChatScreen extends StatefulWidget {
   @override
@@ -69,7 +70,7 @@ class _ChatScreenState extends State<ChatScreen> {
   ///Send a query to Dialogflow and get response message
   Future<String> response(query) async {
     _textController.clear();
-    Dialogflow dialogflow = Dialogflow(token: App.dialogflowToken, sessionId: App.sessionId);
+    Dialogflow dialogflow = Dialogflow(token: dialogflow_token, sessionId: sessionId);
     AIResponse response = await dialogflow.sendQuery(query);
     return response.getMessageResponse();
   }
@@ -120,7 +121,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void _launch(String link) {
     if (!link.contains('#')) {
       link = correctLink(link);
-      if (link.contains(App.home) &&
+      if (link.contains(home) &&
           !(link
               .substring(link.length - 4)
               .contains(new RegExp(r'[.]\w{3}', caseSensitive: false)))) {

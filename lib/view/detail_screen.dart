@@ -8,6 +8,7 @@ import 'package:chewie/chewie.dart';
 import 'package:url_launcher/url_launcher.dart' as browser;
 import 'package:tuyensinh_ctu/view/table_widget.dart';
 import 'package:tuyensinh_ctu/app.dart';
+import 'package:tuyensinh_ctu/config.dart';
 
 class DetailScreen extends StatefulWidget {
   final String url;
@@ -187,7 +188,7 @@ class _DetailScreenState extends State<DetailScreen> {
   void _load(String link) {
     if (!link.contains('#')) {
       link = correctLink(link);
-      if (link.contains(App.home) &&
+      if (link.contains(home) &&
           !(link
               .substring(link.length - 4)
               .contains(new RegExp(r'[.]\w{3}', caseSensitive: false)))) {

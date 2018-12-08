@@ -6,6 +6,7 @@ import 'package:tuyensinh_ctu/view/post_widget.dart';
 import 'package:tuyensinh_ctu/view/drawer_widget.dart';
 import 'package:tuyensinh_ctu/view/detail_screen.dart';
 import 'package:url_launcher/url_launcher.dart' as browser;
+import 'package:tuyensinh_ctu/config.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -13,7 +14,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String _url = App.home;
+  String _url = home;
   BuildContext _scaffContext;
   int _backTapped = 0;
 
@@ -45,7 +46,7 @@ class _HomeState extends State<Home> {
                         _load(_url);
                       },
                       loadHome: () {
-                        _load(App.home);
+                        _load(home);
                       },
                     );
                   } else {
@@ -59,7 +60,7 @@ class _HomeState extends State<Home> {
   void _load(String link) {
     if (!link.contains('#')) {
       link = correctLink(link);
-      if (link.contains(App.home) &&
+      if (link.contains(home) &&
           !(link
               .substring(link.length - 4)
               .contains(new RegExp(r'[.]\w{3}', caseSensitive: false)))) {
@@ -75,7 +76,7 @@ class _HomeState extends State<Home> {
   void _launch(String link) {
     if (!link.contains('#')) {
       link = correctLink(link);
-      if (link.contains(App.home) &&
+      if (link.contains(home) &&
           !(link
               .substring(link.length - 4)
               .contains(new RegExp(r'[.]\w{3}', caseSensitive: false)))) {
